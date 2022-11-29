@@ -523,6 +523,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   };
 
   onMouseDown: PointerEventHandler = (event) => {
+    console.log({target: event.target, element: asElement(event.target)});
     if (!isHTMLElement(event.target)) {
       return;
     }
