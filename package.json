@@ -30,13 +30,13 @@
     "clean": "rm -rf dist"
   },
   "peerDependencies": {
-    "react": ">=16.4.0",
-    "react-dom": ">=16.4.0"
+    "react": ">=18.0.25",
+    "react-dom": ">=18.0.9"
   },
   "dependencies": {
     "@types/lodash.debounce": "^4.0.6",
     "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.09",
+    "@types/react-dom": "^18.0.9",
     "lodash.debounce": "^4.0.8",
     "pdfjs-dist": "2.16.105",
     "react-rnd": "^10.1.10"
@@ -59,6 +59,6 @@
   }, 
   "resolutions": {
     "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.09"
+    "@types/react-dom": "^18.0.9"
   }
 }
