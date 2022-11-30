@@ -78,6 +78,7 @@ interface Props<T_HT> {
   onScrollChange: (pageNumber?: number) => void;
   onDocumentLoad: (pdfDoc: PDFDocumentProxy) => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
+  zoomRef: (onZoom: (zoomIn: boolean) => void) => void;
   pdfDocument: PDFDocumentProxy;
   pdfScaleValue: string;
   onSelectionFinished: (
@@ -435,6 +436,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   scrollTo = (highlight: T_HT) => {
     const { pageNumber, boundingRect, usePdfCoordinates } = highlight.position;
     this.viewer.container.removeEventListener("scroll", this.onScroll);
+    this.viewer.container.removeEventListener("scroll", this.onScrollTracker)
     const pageViewport = this.viewer.getPageView(pageNumber)?.viewport;
     if (!pageViewport) {
       return;
@@ -465,17 +467,23 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
     // wait for scrolling to finish
     setTimeout(() => {
+      this.viewer.container.addEventListener("scroll", this.onScrollTracker)
       this.viewer.container.addEventListener("scroll", this.onScroll);
     }, 100);
   };
 
+  onZoom = (zoomIn: boolean) => {
+    zoomIn ? this.viewer.increaseScale() : this.viewer.decreaseScale();
+  }
+
   onDocumentReady = () => {
-    const { scrollRef, onDocumentLoad, pdfDocument } = this.props;
+    const { scrollRef, onDocumentLoad, pdfDocument, zoomRef } = this.props;
     onDocumentLoad(pdfDocument);
     this.handleScaleValue();
     this.viewer.container.addEventListener("scroll", this.onScrollTracker)
 
     scrollRef(this.scrollTo);
+    zoomRef(this.onZoom);
   };
 
   onSelectionChange = () => {
@@ -547,7 +555,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   afterSelection = () => {
     const { onSelectionFinished } = this.props;
-
     const { isCollapsed, range } = this.state;
 
     if (!range || isCollapsed) {
