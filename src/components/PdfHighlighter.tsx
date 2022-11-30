@@ -75,7 +75,7 @@ interface Props<T_HT> {
     isScrolledTo: boolean
   ) => JSX.Element;
   highlights: Array<T_HT>;
-  onScrollChange: () => void;
+  onScrollChange: (pageNumber?: number) => void;
   onDocumentLoad: (pdfDoc: PDFDocumentProxy) => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
   pdfDocument: PDFDocumentProxy;
@@ -435,7 +435,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   scrollTo = (highlight: T_HT) => {
     const { pageNumber, boundingRect, usePdfCoordinates } = highlight.position;
     this.viewer.container.removeEventListener("scroll", this.onScroll);
-
+    const currentPage = this.viewer.currentPageNumber;
     const pageViewport = this.viewer.getPageView(pageNumber - 1).viewport;
 
     const scrollMargin = 10;
@@ -508,9 +508,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   onScroll = () => {
     const { onScrollChange } = this.props;
-
-    onScrollChange();
-
+    onScrollChange(this.viewer.currentPageNumber);
     this.setState(
       {
         scrolledToHighlightId: EMPTY_ID,
