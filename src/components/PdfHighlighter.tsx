@@ -131,7 +131,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   componentDidMount() {
-    console.log("mounted");
     this.init();
   }
 
@@ -317,7 +316,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const { pdfDocument } = this.props;
 
     const { tip, scrolledToHighlightId } = this.state;
-
     const highlightsByPage = this.groupHighlightsByPage(highlights);
 
     for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
