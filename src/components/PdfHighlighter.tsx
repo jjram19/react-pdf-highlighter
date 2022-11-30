@@ -131,6 +131,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   componentDidMount() {
+    console.log("mounted");
     this.init();
   }
 
