@@ -473,6 +473,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const { scrollRef, onDocumentLoad, pdfDocument } = this.props;
     onDocumentLoad(pdfDocument);
     this.handleScaleValue();
+    this.viewer.container.addEventListener("scroll", this.onScrollTracker)
 
     scrollRef(this.scrollTo);
   };
@@ -519,6 +520,11 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     );
 
     this.viewer.container.removeEventListener("scroll", this.onScroll);
+  };
+
+  onScrollTracker = () => {
+    const { onScrollChange } = this.props;
+    onScrollChange(this.viewer.currentPageNumber);
   };
 
   onMouseDown: PointerEventHandler = (event) => {
