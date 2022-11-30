@@ -172,8 +172,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   init() {
-    const { pdfDocument, onDocumentLoad } = this.props;
-    onDocumentLoad(pdfDocument);
+    const { pdfDocument } = this.props;
     this.viewer =
       this.viewer ||
       new PDFViewer({
@@ -469,8 +468,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   };
 
   onDocumentReady = () => {
-    const { scrollRef } = this.props;
-
+    const { scrollRef, onDocumentLoad, pdfDocument } = this.props;
+    onDocumentLoad(pdfDocument);
     this.handleScaleValue();
 
     scrollRef(this.scrollTo);
