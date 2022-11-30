@@ -436,7 +436,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const { pageNumber, boundingRect, usePdfCoordinates } = highlight.position;
     this.viewer.container.removeEventListener("scroll", this.onScroll);
     const pageViewport = this.viewer.getPageView(pageNumber)?.viewport;
-    console.log({pageViewport, boundingRect, usePdfCoordinates, pageNumber});
     if (!pageViewport) {
       return;
     }
@@ -523,7 +522,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   };
 
   onMouseDown: PointerEventHandler = (event) => {
-    console.log({target: event.target, element: asElement(event.target)});
     if (!isHTMLElement(event.target)) {
       return;
     }
