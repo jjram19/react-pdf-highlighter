@@ -334,8 +334,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const scale = this.viewer.currentScale;
     for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
       const tableLayer = this.findOrCreateTablesLayer(pageNumber);
-      const tables = renderTables({ scale,pageIndex: pageNumber - 1});
-      tables && ReactDom.render(tables, tableLayer)
+      if (tableLayer) {
+        const tables = renderTables({ scale,pageIndex: pageNumber - 1});
+        tables && ReactDom.render(tables, tableLayer);
+      }
     }
   }
 
