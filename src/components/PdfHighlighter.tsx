@@ -79,7 +79,7 @@ interface Props<T_HT> {
   onDocumentLoad: (pdfDoc: PDFDocumentProxy) => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
   zoomRef: (onZoom: (zoomIn: boolean) => void) => void;
-  setDocumentDimensions: (dimensions:{weight: number; height: number}[]) => void;
+  setDocumentDimensions: (dimensions:{width: number; height: number}) => void;
   pdfDocument: PDFDocumentProxy;
   pdfScaleValue: string;
   onSelectionFinished: (
@@ -479,8 +479,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   onDocumentReady = () => {
     const { scrollRef, onDocumentLoad, pdfDocument, zoomRef, setDocumentDimensions } = this.props;
     onDocumentLoad(pdfDocument);
-    setDocumentDimensions(this.viewer.getPagesOverview().map(({weight, height}) => ({weight, height})));
-    console.log("reached");
+    pdfDocument.getPage(0).then(val => setDocumentDimensions({height: val.getViewport().height, width: val.getViewport().width}))
     this.handleScaleValue();
     this.viewer.container.addEventListener("scroll", this.onScrollTracker)
 
