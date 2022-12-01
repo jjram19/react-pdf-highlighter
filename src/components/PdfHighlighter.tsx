@@ -217,15 +217,15 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     );
   }
 
-  findOrCreateTablesLayer(page: number) {
-    const { textLayer } = this.viewer.getPageView(page - 1) || {};
+  findOrCreateTablesLayer(pageNum: number) {
+    const { page } = this.viewer.getPageView(pageNum - 1) || {};
 
-    if (!textLayer) {
+    if (!page) {
       return null;
     }
 
     return findOrCreateContainerLayer(
-      textLayer.textLayerDiv,
+      page.pageDiv,
       "PdfHighlighter__table-layer"
     );
   }
