@@ -478,8 +478,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   onDocumentReady = () => {
     const { scrollRef, onDocumentLoad, pdfDocument, zoomRef, setDocumentDimensions } = this.props;
-    onDocumentLoad(pdfDocument);
     pdfDocument.getPage(0).then(val => setDocumentDimensions({height: val.getViewport().height, width: val.getViewport().width}))
+    onDocumentLoad(pdfDocument);
     this.handleScaleValue();
     this.viewer.container.addEventListener("scroll", this.onScrollTracker)
 
