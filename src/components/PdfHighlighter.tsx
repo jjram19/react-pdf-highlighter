@@ -75,7 +75,7 @@ interface Props<T_HT> {
     isScrolledTo: boolean
   ) => JSX.Element;
   highlights: Array<T_HT>;
-  renderTables: (props: {scale: number; pageIndex: number}) => React.ReactElement;
+  renderTables: (props: {scale: number; pageIndex: number}) => React.ReactElement | null;
   onScrollChange: (pageNumber?: number) => void;
   onDocumentLoad: (pdfDoc: PDFDocumentProxy) => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
@@ -330,7 +330,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const scale = this.viewer.currentScale;
     for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
       const tableLayer = this.findOrCreateTablesLayer(pageNumber);
-      ReactDom.render(renderTables({ scale,pageIndex: pageNumber - 1}), tableLayer)
+      const tables = renderTables({ scale,pageIndex: pageNumber - 1});
+      tables && ReactDom.render(tables, tableLayer)
     }
   }
 
