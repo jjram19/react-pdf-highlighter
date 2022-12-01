@@ -218,11 +218,12 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   findOrCreateTablesLayer(page: number) {
-    const { canvasWrapper } = this.viewer.getPageView(page - 1) || {};
-    if (!canvasWrapper) {
+    const { textLayer } = this.viewer.getPageView(page - 1) || {};
+    console.log(this.viewer.getPageView(page - 1) || {})
+    if (!textLayer) {
         return null;
     }
-    return findOrCreateContainerLayer(canvasWrapper.canvasWrapperDiv, "PdfHighlighter__table-layer");
+    return findOrCreateContainerLayer(textLayer.textLayerDiv, "PdfHighlighter__table-layer");
   }
 
   groupHighlightsByPage(highlights: Array<T_HT>): {
