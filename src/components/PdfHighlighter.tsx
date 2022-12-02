@@ -75,8 +75,8 @@ interface Props<T_HT> {
     isScrolledTo: boolean
   ) => JSX.Element;
   highlights: Array<T_HT>;
-  tables: Array<any>;
-  renderTables: (props: {scale: number; pageIndex: number}) => React.ReactElement | null;
+  tables: Array<{page_number: number}>;
+  renderTables: (props: {scale: number; pageIndex: number; height?: number; width?: number;}) => React.ReactElement | null;
   onScrollChange: (pageNumber?: number) => void;
   onDocumentLoad: (pdfDoc: PDFDocumentProxy) => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
@@ -211,7 +211,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   findOrCreateTablesLayer(page: number) {
     const { textLayer } = this.viewer.getPageView(page - 1) || {};
-    console.log(this.viewer.getPageView(page - 1) || {})
     if (!textLayer) {
         return null;
     }
@@ -318,15 +317,20 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   renderTables(nextProps?: Props<T_HT>) {
-    const { pdfDocument, renderTables } = nextProps || this.props;
+    const { renderTables, tables } = nextProps || this.props;
+    const pageNumbers = new Set(tables.map(({page_number}) => page_number));
     const scale = this.viewer.currentScale;
-    for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
+    pageNumbers.forEach(pageNumber => {
+      const page = this.viewer.getPageView(pageNumber - 1);
+      const div = page.textLayer.textLayerDiv;
+      const height = div.offsetHeight; 
+      const width = div.offsetWidth;
       const tableLayer = this.findOrCreateTablesLayer(pageNumber);
       if (tableLayer) {
-        const tables = renderTables({ scale,pageIndex: pageNumber - 1});
+        const tables = renderTables({ scale, pageIndex: pageNumber - 1, height, width});
         tables && ReactDom.render(tables, tableLayer);
       }
-    }
+    })
   }
 
   renderHighlights(nextProps?: Props<T_HT>) {
