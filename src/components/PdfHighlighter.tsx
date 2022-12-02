@@ -318,7 +318,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   renderTables(nextProps?: Props<T_HT>) {
     const { renderTables, tables } = nextProps || this.props;
-    const pageNumbers = new Set(tables.map(({page_number}) => page_number));
+    const pageNumbers = new Set(tables.map(({page_number}) => page_number + 1));
     const scale = this.viewer.currentScale;
     pageNumbers.forEach(pageNumber => {
       const page = this.viewer.getPageView(pageNumber - 1);
