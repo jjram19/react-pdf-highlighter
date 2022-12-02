@@ -322,7 +322,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const scale = this.viewer.currentScale;
     pageNumbers.forEach(pageNumber => {
       const page = this.viewer.getPageView(pageNumber - 1);
-      if (!page) {
+      if (!page || !page.textLayer) {
         return;
       }
       const div = page.textLayer.textLayerDiv;
